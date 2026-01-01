@@ -1,0 +1,4 @@
+repository "ProjectArc@tj_wechat_os_qy0yzasczye8hnssdnlducjtk@cloud.cn"
+  path "/"
+    br "/main"
+    co "/main"
