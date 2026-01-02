@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace _Game.Scripts.Core
+namespace ProjectArc.Core
 {
     /// <summary>
     /// 简易事件系统

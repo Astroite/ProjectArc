@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - PlayerProjectile
   layers:
   - Default
   - TransparentFX
@@ -17,13 +18,13 @@ TagManager:
   - 
   - Controls
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Enemy
+  - PlayerProjectile
+  - EnemyProjectile
+  - Environment
+  - PowerUp
+  - Graze
   - 
   - 
   - 

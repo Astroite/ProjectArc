@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace _Game.Scripts.Gameplay.Player
+namespace ProjectArc.Gameplay.Player
 {
     /// <summary>
     /// 炮台控制器

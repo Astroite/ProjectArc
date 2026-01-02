@@ -1,72 +1,111 @@
-﻿using _Game.Scripts.Core;
+﻿using System;
+using ProjectArc.Core;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-namespace _Game.Scripts.Gameplay.Combat
+namespace ProjectArc.Gameplay.Combat
 {
-    /// <summary>
-    /// 武器系统
-    /// 负责：射击频率控制、枪口位置管理、调用对象池发射
-    /// </summary>
     public class WeaponSystem : MonoBehaviour
     {
-        [Header("References")]
-        [SerializeField] private GameObject projectilePrefab; // 子弹预制体
-        [SerializeField] private Transform[] firePoints;      // 枪口位置（支持多枪口）
-
-        [Header("Stats")]
-        [SerializeField] private float fireRate = 0.1f;       // 射击间隔
-        [SerializeField] private bool autoFire = true;        // 是否自动射击
-
-        private float _fireTimer;
-        private bool _isFiring = false; // 内部开火状态
-
-        private void Update()
+        [System.Serializable]
+        public class WeaponSlot
         {
-            // 只要处于开火状态 或者 开启了自动射击，就尝试开火
-            if (_isFiring || autoFire)
+            public Transform firePoint;
+            public float fireRate = 0.5f;
+            public string projectileTag = "Bullet_Basic";
+
+            [Header("Stats Modifiers")] [Tooltip("伤害倍率：传给子弹用于计算最终伤害")]
+            public float damageMultiplier = 1f;
+
+            [Tooltip("速度倍率：传给子弹用于计算飞行速度")] public float speedMultiplier = 1f;
+
+            [HideInInspector] public float nextFireTime;
+        }
+
+        [Header("Control Settings")] [Tooltip("是否自动连续射击（适用于敌人或自动炮台）")] [SerializeField]
+        private bool isAutoFire = false;
+
+        [Tooltip("是否响应玩家鼠标输入（调试或玩家控制器用）")] [SerializeField]
+        private bool usePlayerInput = false;
+
+        public WeaponSlot[] weaponSlots;
+
+        void Update()
+        {
+            // 逻辑分支：自动开火 OR 玩家输入
+            if (isAutoFire)
             {
-                ProcessFiring();
+                FireWeapons();
+            }
+            else if (usePlayerInput && Input.GetMouseButton(0))
+            {
+                FireWeapons();
             }
         }
 
-        // --- 新增供 UI 调用的接口 ---
-        public void StartFiring() => _isFiring = true;
-        public void StopFiring() => _isFiring = false;
-        public void SetAutoFire(bool active) => autoFire = active;
-        // ---------------------------
-
-        private void ProcessFiring()
+        /// <summary>
+        /// 触发所有武器槽位的发射逻辑（会检查冷却时间）
+        /// </summary>
+        public void FireWeapons()
         {
-            if (_fireTimer > 0)
+            // 遍历所有武器槽
+            foreach (var slot in weaponSlots)
             {
-                _fireTimer -= Time.deltaTime;
+                if (slot.firePoint == null) continue;
+
+                // 检查冷却
+                if (Time.time >= slot.nextFireTime)
+                {
+                    Fire(slot);
+                    slot.nextFireTime = Time.time + 1 / slot.fireRate;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 执行单次发射
+        /// </summary>
+        void Fire(WeaponSlot slot)
+        {
+            if (ObjectPoolManager.Instance == null)
+            {
+                Debug.LogWarning("ObjectPoolManager instance not found!");
                 return;
             }
 
-            Fire();
-            _fireTimer = fireRate;
+            // 修改 1: 使用新的 SpawnObject API
+            GameObject bullet = ObjectPoolManager.Instance.SpawnObject(
+                slot.projectileTag,
+                slot.firePoint.position,
+                slot.firePoint.rotation
+            );
+
+            if (bullet != null)
+            {
+                // 修改 2: 适配新的 Projectile.Initialize 签名，传递倍率参数
+                Projectile projScript = bullet.GetComponent<Projectile>();
+                if (projScript != null)
+                {
+                    projScript.Initialize(slot.firePoint.forward, slot.speedMultiplier, slot.damageMultiplier);
+                }
+            }
         }
 
-        private void Fire()
+        // --- 公共方法，供外部脚本（如 EnemyController）控制 ---
+
+        public void SetAutoFire(bool active)
         {
-            if (!projectilePrefab || firePoints == null || firePoints.Length == 0) return;
+            isAutoFire = active;
+        }
 
-            foreach (var point in firePoints)
+        private void OnDrawGizmos()
+        {
+            foreach (var slot in weaponSlots)
             {
-                // 从对象池获取子弹
-                var bulletObj = ObjectPoolManager.Instance.Spawn(
-                    projectilePrefab, 
-                    point.position, 
-                    point.rotation
-                );
+                if (slot.firePoint == null) continue;
 
-                // 初始化子弹
-                Projectile projectile = bulletObj.GetComponent<Projectile>();
-                if (projectile)
-                {
-                    projectile.Initialize(projectilePrefab);
-                }
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(slot.firePoint.position, slot.firePoint.position + slot.firePoint.forward * 1.5f);
+
             }
         }
     }

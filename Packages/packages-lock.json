@@ -34,7 +34,7 @@
       "url": "https://packages.tuanjie.cn"
     },
     "com.unity.ide.rider": {
-      "version": "3.0.35",
+      "version": "3.0.38",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -43,11 +43,11 @@
       "url": "https://packages.tuanjie.cn"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.22",
+      "version": "2.0.26",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.test-framework": "1.1.9"
+        "com.unity.test-framework": "1.1.33"
       },
       "url": "https://packages.tuanjie.cn"
     },
@@ -161,7 +161,7 @@
       }
     },
     "com.unity.visualscripting": {
-      "version": "1.9.4",
+      "version": "1.9.9",
       "depth": 0,
       "source": "registry",
       "dependencies": {

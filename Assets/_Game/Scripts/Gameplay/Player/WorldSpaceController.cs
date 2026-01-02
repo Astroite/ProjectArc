@@ -1,8 +1,8 @@
 using System;
-using _Game.Scripts.Gameplay.Combat;
+using ProjectArc.Gameplay.Combat;
 using UnityEngine;
 
-namespace _Game.Scripts.Gameplay.Player
+namespace ProjectArc.Gameplay.Player
 {
     /// <summary>
     /// 世界空间控制器 (3D UI)
@@ -70,7 +70,7 @@ namespace _Game.Scripts.Gameplay.Player
             if (isUp)
             {
                 _isDragging = false;
-                _weapon?.StopFiring();
+                // _weapon?.StopFiring();
                 return;
             }
 
@@ -85,7 +85,7 @@ namespace _Game.Scripts.Gameplay.Player
                 {
                     _isDragging = true;
                     UpdateTurretAim(hit.point);
-                    _weapon?.StartFiring();
+                    // _weapon?.StartFiring();
                     
                     // Debug
                     _debugHitPoint = hit.point;

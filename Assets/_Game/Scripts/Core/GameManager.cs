@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
-namespace _Game.Scripts.Core
+namespace ProjectArc.Core
 {
     public enum GameState
     {
