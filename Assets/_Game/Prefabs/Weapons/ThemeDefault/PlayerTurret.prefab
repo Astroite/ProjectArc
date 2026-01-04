@@ -180,7 +180,8 @@ MonoBehaviour:
   weaponSlots:
   - firePoint: {fileID: 5887163101829729851}
     fireRate: 10
-    projectileTag: PlayerProjectile
+    projectilePrefab: {fileID: 739006293930432979, guid: 6552155159ffd8b43823bcc718987a00,
+      type: 3}
     damageMultiplier: 1
     speedMultiplier: 1
     nextFireTime: 0

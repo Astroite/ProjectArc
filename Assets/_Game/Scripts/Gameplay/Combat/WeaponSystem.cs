@@ -1,6 +1,6 @@
 ﻿using System;
-using ProjectArc.Core;
 using UnityEngine;
+using ProjectArc.Core;
 
 namespace ProjectArc.Gameplay.Combat
 {
@@ -11,27 +11,25 @@ namespace ProjectArc.Gameplay.Combat
         {
             public Transform firePoint;
             public float fireRate = 0.5f;
-            public string projectileTag = "Bullet_Basic";
-
-            [Header("Stats Modifiers")] [Tooltip("伤害倍率：传给子弹用于计算最终伤害")]
+            
+            [Tooltip("直接拖入子弹预制体 (Prefab)")]
+            public GameObject projectilePrefab; // 修改点：不再使用 string Tag
+            
+            [Header("Stats Modifiers")]
             public float damageMultiplier = 1f;
-
-            [Tooltip("速度倍率：传给子弹用于计算飞行速度")] public float speedMultiplier = 1f;
+            public float speedMultiplier = 1f;
 
             [HideInInspector] public float nextFireTime;
         }
 
-        [Header("Control Settings")] [Tooltip("是否自动连续射击（适用于敌人或自动炮台）")] [SerializeField]
-        private bool isAutoFire = false;
-
-        [Tooltip("是否响应玩家鼠标输入（调试或玩家控制器用）")] [SerializeField]
-        private bool usePlayerInput = false;
+        [Header("Control Settings")]
+        [SerializeField] private bool isAutoFire = false;
+        [SerializeField] private bool usePlayerInput = false;
 
         public WeaponSlot[] weaponSlots;
 
         void Update()
         {
-            // 逻辑分支：自动开火 OR 玩家输入
             if (isAutoFire)
             {
                 FireWeapons();
@@ -42,17 +40,12 @@ namespace ProjectArc.Gameplay.Combat
             }
         }
 
-        /// <summary>
-        /// 触发所有武器槽位的发射逻辑（会检查冷却时间）
-        /// </summary>
         public void FireWeapons()
         {
-            // 遍历所有武器槽
             foreach (var slot in weaponSlots)
             {
                 if (slot.firePoint == null) continue;
 
-                // 检查冷却
                 if (Time.time >= slot.nextFireTime)
                 {
                     Fire(slot);
@@ -61,36 +54,27 @@ namespace ProjectArc.Gameplay.Combat
             }
         }
 
-        /// <summary>
-        /// 执行单次发射
-        /// </summary>
         void Fire(WeaponSlot slot)
         {
-            if (ObjectPoolManager.Instance == null)
-            {
-                Debug.LogWarning("ObjectPoolManager instance not found!");
-                return;
-            }
+            if (ObjectPoolManager.Instance == null || slot.projectilePrefab == null) return;
 
-            // 修改 1: 使用新的 SpawnObject API
-            GameObject bullet = ObjectPoolManager.Instance.SpawnObject(
-                slot.projectileTag,
-                slot.firePoint.position,
+            // 使用新的 Spawn 接口，传入 Prefab 引用
+            GameObject bullet = ObjectPoolManager.Instance.Spawn(
+                slot.projectilePrefab, 
+                slot.firePoint.position, 
                 slot.firePoint.rotation
             );
-
+            
             if (bullet != null)
             {
-                // 修改 2: 适配新的 Projectile.Initialize 签名，传递倍率参数
                 Projectile projScript = bullet.GetComponent<Projectile>();
                 if (projScript != null)
                 {
+                    // 假设 Forward 是 Z 轴 (3D)
                     projScript.Initialize(slot.firePoint.forward, slot.speedMultiplier, slot.damageMultiplier);
                 }
             }
         }
-
-        // --- 公共方法，供外部脚本（如 EnemyController）控制 ---
 
         public void SetAutoFire(bool active)
         {
@@ -99,13 +83,11 @@ namespace ProjectArc.Gameplay.Combat
 
         private void OnDrawGizmos()
         {
+
             foreach (var slot in weaponSlots)
             {
-                if (slot.firePoint == null) continue;
-
-                Gizmos.color = Color.red;
-                Gizmos.DrawLine(slot.firePoint.position, slot.firePoint.position + slot.firePoint.forward * 1.5f);
-
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawLine(slot.firePoint.position, slot.firePoint.position + slot.firePoint.forward);
             }
         }
     }

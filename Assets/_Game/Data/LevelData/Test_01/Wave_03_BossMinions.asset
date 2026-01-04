@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35da146274c89034b9a5b6c5efb6cff6, type: 3}
   m_Name: Wave_03_BossMinions
   m_EditorClassIdentifier: 
-  enemyTag: Enemy_Basic
+  enemyPrefab: {fileID: 974501333220202860, guid: 3e2b2fbc2617c684089bfa3f94130ef6,
+    type: 3}
   count: 2
   spawnInterval: 2
   baseOffset: {x: 0, y: 0, z: 0}

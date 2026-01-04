@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 2347126379388461343}
   - component: {fileID: 2208988832051990641}
   - component: {fileID: 5378061777086483306}
-  m_Layer: 15
+  m_Layer: 14
   m_HasEditorInfo: 1
-  m_Name: Enemy_Bullet_Basic
+  m_Name: Player_Bullet_Basic
   m_TagString: PlayerProjectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -155,4 +155,10 @@ MonoBehaviour:
   lifetime: 3
   damagePower: 1
   maxDurability: 3
-  hitVFXTag: VFX_Hit_Spark
+  hitVfxPrefab: {fileID: 2504214343621411470, guid: 5194806db89bcc9479b2171c0709717d,
+    type: 3}
+  bounceVfxPrefab: {fileID: 2504214343621411470, guid: d1f64ceaa7e2de14faf39a39812fb755,
+    type: 3}
+  maxBounces: 3
+  bounceSpeedMultiplier: 0.9
+  bounceDamageMultiplier: 0.8

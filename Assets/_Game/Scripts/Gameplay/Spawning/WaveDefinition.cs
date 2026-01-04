@@ -6,8 +6,8 @@ namespace ProjectArc.Gameplay.Spawning
     public class WaveDefinition : ScriptableObject
     {
         [Header("Enemy Settings")]
-        [Tooltip("对象池中敌人的Tag，例如 'Enemy_Basic'")]
-        public string enemyTag = "Enemy_Basic";
+        [Tooltip("直接拖入敌人预制体，不再使用字符串Tag")]
+        public GameObject enemyPrefab; // 修改点
 
         [Tooltip("这一波生成的敌人总数")]
         public int count = 5;

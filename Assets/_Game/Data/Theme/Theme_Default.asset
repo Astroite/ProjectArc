@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94697f75e0a047728c07a3a023036c28, type: 3}
+  m_Name: Theme_Default
+  m_EditorClassIdentifier: 
+  skyboxMaterial: {fileID: 0}
+  fogColor: {r: 0.46996254, g: 0.543974, b: 0.55660367, a: 1}
+  fogDensity: 0.01
+  enemyPrefabs:
+  - {fileID: 974501333220202860, guid: 3e2b2fbc2617c684089bfa3f94130ef6, type: 3}
+  projectilePrefabs:
+  - {fileID: 739006293930432979, guid: c26ffab9c8012254c885bbe5c21812dc, type: 3}
+  - {fileID: 739006293930432979, guid: 6552155159ffd8b43823bcc718987a00, type: 3}
+  vfxPrefabs:
+  - {fileID: 2504214343621411470, guid: 5194806db89bcc9479b2171c0709717d, type: 3}
+  - {fileID: 1429954232896169633, guid: 95ecc2f3ef00bf04da8d28bc8ec8f3af, type: 3}
+  - {fileID: 2504214343621411470, guid: d1f64ceaa7e2de14faf39a39812fb755, type: 3}
