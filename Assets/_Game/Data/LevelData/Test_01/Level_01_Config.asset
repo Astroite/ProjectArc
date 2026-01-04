@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bffe086898c14eb5b1be6e2b9081321f, type: 3}
+  m_Name: Level_01_Config
+  m_EditorClassIdentifier: 
+  levelName: Level 1
+  levelDescription: The journey begins.
+  theme: {fileID: 11400000, guid: 02938ca9b26f59a4ab54abf571326762, type: 2}
+  winCondition: 1
+  winConditionValue: 20
+  waves:
+  - {fileID: 11400000, guid: 5b28e4e3ac9f1a84d846b5999cf42912, type: 2}
+  - {fileID: 11400000, guid: 0d34f1a6dd615794db61c1e4d57637d5, type: 2}
+  - {fileID: 11400000, guid: d8c0a81467e15204bbc107cbca8e25db, type: 2}
+  loopWaves: 0

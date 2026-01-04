@@ -576,12 +576,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26887539e6304025b86f672fac2b38e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelTheme: {fileID: 11400000, guid: 02938ca9b26f59a4ab54abf571326762, type: 2}
-  waves:
-  - {fileID: 11400000, guid: 5b28e4e3ac9f1a84d846b5999cf42912, type: 2}
-  - {fileID: 11400000, guid: 0d34f1a6dd615794db61c1e4d57637d5, type: 2}
-  - {fileID: 11400000, guid: d8c0a81467e15204bbc107cbca8e25db, type: 2}
-  loopLevels: 1
+  config: {fileID: 11400000, guid: 3df063afd1f8b7b4085ed9c79dfaf5c1, type: 2}
   spawnOrigin: {fileID: 0}
 --- !u!1 &961739749
 GameObject:
