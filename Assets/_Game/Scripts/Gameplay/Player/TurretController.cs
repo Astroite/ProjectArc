@@ -15,6 +15,10 @@ namespace ProjectArc.Gameplay.Player
         [Range(0, 360)] [SerializeField] private float minAngle = 90f; // 正前方
         [Range(0, 360)] [SerializeField] private float maxAngle = 180f; // 正左方
 
+        public float MinAngle => minAngle;
+        public float MaxAngle => maxAngle;
+        public float CurrentAngle => turretPivot != null ? turretPivot.eulerAngles.y : 0f;
+
         [Header("References")] [SerializeField]
         private Transform turretPivot; // 炮台旋转轴心
 

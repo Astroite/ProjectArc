@@ -142,7 +142,27 @@ namespace ProjectArc.Core
             {
                 // 不属于池子的物体直接销毁
                 Debug.LogWarning($"Object '{obj.name}' not in pool map. Destroying.");
-                Destroy(obj); 
+                Destroy(obj);
+            }
+        }
+
+        /// <summary>
+        /// 回收所有已激活的池对象（用于关卡结束清场）
+        /// </summary>
+        public void ReturnAllActive()
+        {
+            foreach (var kvp in objectToPoolIdMap)
+            {
+                GameObject obj = kvp.Key;
+                if (obj != null && obj.activeInHierarchy)
+                {
+                    obj.SetActive(false);
+                    int poolKey = kvp.Value;
+                    if (poolDictionary.ContainsKey(poolKey))
+                    {
+                        poolDictionary[poolKey].Enqueue(obj);
+                    }
+                }
             }
         }
     }

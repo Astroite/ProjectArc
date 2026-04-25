@@ -29,6 +29,11 @@ namespace ProjectArc.Gameplay.Player
 
         private Vector3 _debugHitPoint =  Vector3.zero;
 
+        /// <summary>当前是否正在触摸操作盘</summary>
+        public bool IsDragging => _isDragging;
+        /// <summary>最近一次射线命中点（世界坐标）</summary>
+        public Vector3 LastHitPoint => _debugHitPoint;
+
         private void Start()
         {
             _mainCamera = Camera.main;

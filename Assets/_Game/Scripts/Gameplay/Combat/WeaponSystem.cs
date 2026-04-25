@@ -25,6 +25,11 @@ namespace ProjectArc.Gameplay.Combat
         [Header("Control Settings")]
         [SerializeField] private bool isAutoFire = false;
         [SerializeField] private bool usePlayerInput = false;
+        [SerializeField] private Faction faction = Faction.Player;
+
+        [Header("VFX")]
+        [Tooltip("开火闪光特效 Prefab")]
+        [SerializeField] private GameObject muzzleFlashPrefab;
 
         public WeaponSlot[] weaponSlots;
 
@@ -70,9 +75,14 @@ namespace ProjectArc.Gameplay.Combat
                 Projectile projScript = bullet.GetComponent<Projectile>();
                 if (projScript != null)
                 {
-                    // 假设 Forward 是 Z 轴 (3D)
-                    projScript.Initialize(slot.firePoint.forward, slot.speedMultiplier, slot.damageMultiplier);
+                    projScript.Initialize(slot.firePoint.forward, slot.speedMultiplier, slot.damageMultiplier, faction);
                 }
+            }
+
+            // 开火闪光特效
+            if (muzzleFlashPrefab != null && ObjectPoolManager.Instance != null)
+            {
+                ObjectPoolManager.Instance.Spawn(muzzleFlashPrefab, slot.firePoint.position, slot.firePoint.rotation);
             }
         }
 

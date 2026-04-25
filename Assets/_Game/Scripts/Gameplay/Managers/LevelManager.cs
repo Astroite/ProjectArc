@@ -4,6 +4,7 @@ using UnityEngine;
 using ProjectArc.Core;
 using ProjectArc.Core.Data;
 using ProjectArc.Gameplay.Spawning;
+using ProjectArc.Gameplay.Enemies;
 
 namespace ProjectArc.Gameplay.Managers
 {
@@ -201,9 +202,8 @@ namespace ProjectArc.Gameplay.Managers
                     break;
 
                 case WinConditionType.ClearAllWaves:
-                    // 简单判定：只要波次走完就算赢
-                    // 进阶判定（TODO）：需要检查 ObjectPoolManager 或 EnemyManager 确定场上没有敌人存活
-                    if (currentWaveIndex >= config.waves.Count) isWin = true; 
+                    if (currentWaveIndex >= config.waves.Count && EnemyController.ActiveEnemyCount == 0)
+                        isWin = true;
                     break;
                 
                 // ScoreTarget 判定将在 ScoreManager 实现后加入
@@ -229,17 +229,33 @@ namespace ProjectArc.Gameplay.Managers
         {
             SetState(isVictory ? LevelState.Victory : LevelState.Defeat);
             StopAllCoroutines(); // 停止刷怪
-            
+
             if (isVictory)
             {
                 Debug.Log("<color=green>VICTORY!</color>");
-                // TODO: 消除全屏子弹
+                // 消除全屏所有活跃池对象（子弹、特效等）
+                if (ObjectPoolManager.Instance != null)
+                    ObjectPoolManager.Instance.ReturnAllActive();
             }
             else
             {
                 Debug.Log("<color=red>DEFEAT!</color>");
-                // TODO: 慢动作效果
+                // 慢动作效果
+                StartCoroutine(SlowMotionEffect());
             }
+        }
+
+        private IEnumerator SlowMotionEffect()
+        {
+            float duration = 1.5f;
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                Time.timeScale = Mathf.Lerp(1f, 0.1f, elapsed / duration);
+                yield return null;
+            }
+            Time.timeScale = 0.1f;
         }
 
         private void SetState(LevelState newState)
@@ -251,6 +267,7 @@ namespace ProjectArc.Gameplay.Managers
         public void RestartLevel()
         {
             StopAllCoroutines();
+            Time.timeScale = 1f;
             StartLevel();
         }
     }

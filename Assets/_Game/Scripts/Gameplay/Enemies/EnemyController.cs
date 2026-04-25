@@ -5,26 +5,27 @@ using ProjectArc.Gameplay.Combat;
 
 namespace ProjectArc.Gameplay.Enemies
 {
-    [RequireComponent(typeof(Rigidbody))] 
+    [RequireComponent(typeof(Rigidbody))]
     public class EnemyController : MonoBehaviour, IDamageable
     {
         [Header("Stats")]
         [SerializeField] private float maxHealth = 10f;
         [SerializeField] private int scoreValue = 100;
-        
+
         [Header("Movement")]
         [SerializeField] private float moveSpeed = 3f;
-        [SerializeField] private Vector3 moveDirection = Vector3.back; 
-        [SerializeField] private float despawnLimit = -20f; 
+        [SerializeField] private Vector3 moveDirection = Vector3.back;
+        [SerializeField] private float despawnLimit = -20f;
 
         [Header("Visuals")]
         [Tooltip("死亡特效 Prefab")]
-        [SerializeField] private GameObject deathVfxPrefab; // 修改：引用 Prefab
-        
-        // [SerializeField] private GameObject hitVfxPrefab; // 如果有受击特效也可以加
+        [SerializeField] private GameObject deathVfxPrefab;
 
         private float currentHealth;
         private WeaponSystem weaponSystem;
+
+        /// <summary>当前场上活跃的敌人数量</summary>
+        public static int ActiveEnemyCount { get; private set; }
 
         public float CurrentHealth => currentHealth;
 
@@ -41,7 +42,14 @@ namespace ProjectArc.Gameplay.Enemies
         private void OnEnable()
         {
             currentHealth = maxHealth;
+            ActiveEnemyCount++;
             if (weaponSystem != null) weaponSystem.SetAutoFire(true);
+        }
+
+        private void OnDisable()
+        {
+            ActiveEnemyCount--;
+            if (weaponSystem != null) weaponSystem.SetAutoFire(false);
         }
 
         private void Update()
